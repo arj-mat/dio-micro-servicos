@@ -18,6 +18,8 @@ Diferente dos mecanismos ElasticSearch e Redis usados na mentoria, optei por imp
 
 Implementei alguns conceitos vistos ao longo do curso, como Lists, Collections, HttpRequest, Jackson, JPA, MapStruct e Lombok, em especial no [CartService](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java).
 
+O endpoint `cart/{cart}` retorna o carrinho especificado. Caso ele não exista, um carrinho novo é criado e retornado. Os carrinhos possuem uma validade de 24 horas antes de serem [considerados](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java#L51) obsoletos.
+
 O endpoint `cart/{cart}/update?product_id={id}&amount={amount}` atualiza a quantidade do produto especificado no carrinho, utilizando a função *[stream().peek](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java#L157)* na lista de produtos.
 
 O endpoint `cart/{cart}/checkout` soma o valor total dos produtos no carrinhos utilizando as funções [*stream().map* e *reduce*](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java#L188) na lista de produtos. 
