@@ -2,7 +2,7 @@
 
 Neste projeto, implementei o conteúdo aprendido até o módulo de Arquitetura Baseada em Micro Serviços do Santander Bootcamp Fullstack Developer. 
 
-![chrome_80DJEq1GNr](screenshots/chrome_80DJEq1GNr.png)
+![chrome_80DJEq1GNr](https://i.imgur.com/QZ3FGz4.png)
 
 > Imagem de uma simples implementação funcional em HTML, presente no arquivo index.html dentro da pasta resources/static do projeto do Gateway.
 
@@ -14,7 +14,7 @@ Diferente dos mecanismos ElasticSearch e Redis usados na mentoria, optei por imp
 
 ### Recursos 
 
-<img src="screenshots/chrome_0XFQ2iLsw6.png" alt="chrome_0XFQ2iLsw6" style="zoom:67%;" />
+<img src="https://i.imgur.com/oHRyDGU.png" alt="chrome_0XFQ2iLsw6" style="zoom:67%;" />
 
 Implementei alguns conceitos vistos ao longo do curso, como Lists, Collections, JPA, MapStruct e Lombok, em especial no [CartService](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java).
 
