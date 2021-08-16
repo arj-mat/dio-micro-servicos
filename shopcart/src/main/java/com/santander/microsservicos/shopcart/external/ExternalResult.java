@@ -1,15 +1,12 @@
 package com.santander.microsservicos.shopcart.external;
 
-import lombok.Getter;
-
 import java.util.Optional;
 
-@Getter
-public class ExternalDataResult<T> {
+public class ExternalResult<T> {
     public int status;
-    public Optional<T> data;
+    public Optional<T> data = Optional.empty();
 
-    ExternalDataResult(int status) {
+    public ExternalResult(int status) {
         this.status = status;
     }
 }

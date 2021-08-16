@@ -7,9 +7,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class ProductFromCatalogResponse {
+public class ProductFromCatalog {
     private Long id;
     private String name;
     private String category;

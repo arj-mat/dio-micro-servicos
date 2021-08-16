@@ -7,13 +7,12 @@ import com.santander.microsservicos.shopcart.data.entity.CartProductEntity;
 import com.santander.microsservicos.shopcart.data.mapper.CartMapper;
 import com.santander.microsservicos.shopcart.data.mapper.CartProductMapper;
 import com.santander.microsservicos.shopcart.data.repository.CartRepository;
-import com.santander.microsservicos.shopcart.external.ExternalGateway;
-import com.santander.microsservicos.shopcart.external.FetchProductFromCatalog;
-import com.santander.microsservicos.shopcart.external.model.ProductFromCatalogResponse;
+import com.santander.microsservicos.shopcart.external.ExternalResult;
+import com.santander.microsservicos.shopcart.external.RequestProductFromCatalog;
+import com.santander.microsservicos.shopcart.external.model.ProductFromCatalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,20 +82,20 @@ public class CartService {
     public CartDTO insertProduct(String cartID, Long productID) {
         CartEntity cart = this.getOrCreateValidCartEntity( Optional.ofNullable( cartID ) );
 
-        Optional<ProductFromCatalogResponse> productFromCatalog = new FetchProductFromCatalog().get( ExternalGateway.CATALOG,
-                                                                                                     productID.toString() ).data;
+        // Obter os detalhes do produto pela API do shop-catalog:
+        ExternalResult<ProductFromCatalog> productFromCatalog = new RequestProductFromCatalog().byID( productID );
 
-        if ( productFromCatalog.isEmpty() ) {
+        if ( productFromCatalog.data.isEmpty() ) {
             return this.cartMapper
                     .toDTO( cart )
                     .setAlertMessage( "Houve um erro ao processar o produto escolhido." );
-        } else if ( !productFromCatalog.get().isAvailable() ) {
+        } else if ( !productFromCatalog.data.get().isAvailable() ) {
             return this.cartMapper
                     .toDTO( cart )
                     .setAlertMessage(
                             String.format(
                                     "O produto \"%s\" não está disponível.",
-                                    productFromCatalog.get().getName()
+                                    productFromCatalog.data.get().getName()
                             )
                     );
         }
@@ -116,9 +115,9 @@ public class CartService {
                             .builder()
                             .productID( productID )
                             .amount( 1 )
-                            .name( productFromCatalog.get().getName() )
-                            .price( productFromCatalog.get().getPrice() )
-                            .thumbnail( productFromCatalog.get().getThumbnail() )
+                            .name( productFromCatalog.data.get().getName() )
+                            .price( productFromCatalog.data.get().getPrice() )
+                            .thumbnail( productFromCatalog.data.get().getThumbnail() )
                             .build()
             );
         }
