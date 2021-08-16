@@ -1,12 +1,12 @@
 # dio-micro-servicos
 
-Neste projeto, implementei o conteúdo aprendido até o módulo de Arquitetura Baseada em Micro Serviços do Santander Bootcamp Fullstack Developer. 
+Neste projeto, implementei o conteúdo aprendido até o módulo de Arquitetura Baseada em Micro Serviços do Santander Bootcamp Fullstack Developer, na forma de um breve catálogo de produtos e um carrinho de compras.
 
 ![chrome_80DJEq1GNr](https://i.imgur.com/QZ3FGz4.png)
 
-> Imagem de uma simples implementação funcional em HTML, presente no arquivo index.html dentro da pasta resources/static do projeto do Gateway.
+> Imagem de uma simples implementação funcional em HTML/JS, presente no arquivo [index.html](https://github.com/arj-mat/dio-micro-servicos/blob/main/gateway/src/main/resources/static/index.html) dentro da pasta resources/static do projeto do Gateway.
 
-Alguns pontos importantes que segui implementar diferentemente do que foi ensinado na mentoria:
+## Alguns pontos importantes que segui implementar diferentemente do que foi ensinado na mentoria
 
 ### Bancos de dados diferentes
 
@@ -16,7 +16,7 @@ Diferente dos mecanismos ElasticSearch e Redis usados na mentoria, optei por imp
 
 <img src="https://i.imgur.com/oHRyDGU.png" alt="chrome_0XFQ2iLsw6" style="zoom:67%;" />
 
-Implementei alguns conceitos vistos ao longo do curso, como Lists, Collections, JPA, MapStruct e Lombok, em especial no [CartService](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java).
+Implementei alguns conceitos vistos ao longo do curso, como Lists, Collections, HttpRequest, Jackson, JPA, MapStruct e Lombok, em especial no [CartService](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java).
 
 O endpoint `cart/{cart}/update?product_id={id}&amount={amount}` atualiza a quantidade do produto especificado no carrinho, utilizando a função *[stream().peek](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java#L157)* na lista de produtos.
 
