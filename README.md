@@ -14,9 +14,11 @@ Diferente dos mecanismos ElasticSearch e Redis usados na mentoria, optei por imp
 
 ### Recursos 
 
-<img src="https://i.imgur.com/oHRyDGU.png" alt="chrome_0XFQ2iLsw6" style="zoom:67%;" />
-
 Implementei alguns conceitos vistos ao longo do curso, como Lists, Collections, HttpRequest, Jackson, JPA, MapStruct e Lombok, em especial no [CartService](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java).
+
+### Endpoints
+
+<img src="https://i.imgur.com/oHRyDGU.png" alt="chrome_0XFQ2iLsw6" style="zoom:67%;" />
 
 O endpoint `cart/{cart}` retorna o carrinho especificado. Caso ele não exista, um carrinho novo é criado e retornado. Os carrinhos possuem uma validade de 24 horas antes de serem [considerados](https://github.com/arj-mat/dio-micro-servicos/blob/main/shopcart/src/main/java/com/santander/microsservicos/shopcart/data/service/CartService.java#L51) obsoletos.
 
