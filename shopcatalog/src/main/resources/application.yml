@@ -1,0 +1,8 @@
+# Configuração do Shop Catalog
+
+spring:
+  application:
+    name: shop-catalog
+  cloud:
+    config:
+      uri: http://localhost:8888

@@ -1,0 +1,13 @@
+#Configuração do Config Server
+
+server:
+  port:
+    8888
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          default-label: main
+          uri: https://github.com/arj-mat/microsservicos-config.git

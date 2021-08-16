@@ -1,0 +1,202 @@
+<html>
+
+<head>
+    <style>
+        html,
+        body {
+            background-color: #2b2b2b;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #dadada;
+        }
+
+        .produto {
+            display: inline-block;
+            margin: 10px;
+            background-color: white;
+            padding: 4px;
+            border-radius: 4px;
+            padding-bottom: 12px;
+            width: 200px;
+        }
+
+        .produto img {
+            max-width: 100%;
+        }
+
+        .produto h2 {
+            color: black;
+            text-align: center;
+        }
+
+        .produto h3 {
+            display: block;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            color: orange;
+            text-align: right;
+        }
+
+        #carrinho {
+            position: absolute;
+            right: 0;
+            width: 350px;
+            background-color: #191919;
+            color: #dadada;
+            height: auto;
+            top: 0;
+            bottom: 0;
+            padding: 10px;
+            padding-top: 0;
+        }
+
+        #carrinho .produtos {
+            max-height: 60%;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        #carrinho .produtos .item {
+            padding: 6px;
+            border-bottom: 2px solid white;
+            margin-bottom: 10px;
+        }
+
+        #carrinho .produtos .item img {
+            max-width: 64px;
+        }
+
+        #carrinho .subtotal {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1e1e1e;
+            font-family: Consolas, 'Courier New', Courier, monospace;
+            font-size: 14px;
+            padding: 10px;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
+</head>
+
+<body>
+    <div id="info"></div>
+    <div id="produtos"></div>
+    <div id="carrinho"></div>
+
+    <script>
+        var idCarrinho = Cookies.get( "cart_id" ) ? Cookies.get( "cart_id" ) : "create";
+
+        function carregarCarrinho() {
+            fetch( `http://localhost:8080/cart/${idCarrinho}` )
+                .then( response => response.json() )
+                .then( mostrarCarrinho );
+        }
+
+        function mostrarCarrinho( cart ) {
+            idCarrinho = cart.id;
+
+            Cookies.set( "cart_id", idCarrinho, { expires: 1 } );
+
+            document.getElementById( "info" ).innerHTML = `<b>Carrinho:</b><br><br>` + JSON.stringify( cart );
+
+            let quantidadeProdutos = 0;
+
+            cart.products.forEach( item => quantidadeProdutos += item.amount );
+
+            document.getElementById( "carrinho" ).innerHTML = `
+                        <h2>${quantidadeProdutos} item(ns) no carrinho</h2>
+
+                        <div class="produtos">
+
+                        </div>
+
+                        <button onclick="checkout()"><h3>Checkout</h3></button> <button onclick="limpar()"><h4>Limpar carrinho</h4></button>
+
+                        <h2 class="subtotal"></h2>
+            `;
+
+            cart.products.forEach( item => {
+                let container = document.createElement( "div" );
+
+                container.className = "item";
+                container.innerHTML = `
+                    <h2>${item.name} (x${item.amount})</h2>
+                    <img src="${item.thumbnail}"/>
+                    <h3>R$ ${item.price}</h3>
+                    <button onclick="removerProduto(${item.productID})">Remover</button>
+                `;
+
+                document.getElementById( "carrinho" ).getElementsByClassName( "produtos" )[ 0 ].appendChild( container );
+            } );
+
+            if ( cart.alertMessage )
+                alert( cart.alertMessage );
+        }
+
+        document.addEventListener( "DOMContentLoaded", () => { carregarCarrinho() } );
+
+        fetch( "http://localhost:8080/product/all" )
+            .then( response => response.json() )
+            .then( products => {
+                products.forEach( item => {
+                    let container = document.createElement( "div" );
+
+                    container.className = "produto";
+                    container.innerHTML = `
+                        <h2>${item.name}</h2>
+                        <img src="${item.thumbnail}"/>
+                        <h3>R$ ${item.price}</h3>
+                        <center>
+                            <button onclick="addProduto(${item.id})">Comprar</button>
+                        </center>
+                    `;
+
+                    if ( !item.available )
+                        container.getElementsByTagName( "h2" )[ 0 ].style.textDecoration = "line-through";
+
+                    document.getElementById( "produtos" ).appendChild( container );
+                } );
+            } );
+
+
+
+        function addProduto( id ) {
+            fetch( `http://localhost:8080/cart/${idCarrinho}/insert?product_id=${id}` )
+                .then( response => response.json() )
+                .then( mostrarCarrinho );
+        }
+
+        function removerProduto( id ) {
+            fetch( `http://localhost:8080/cart/${idCarrinho}/remove?product_id=${id}` )
+                .then( response => response.json() )
+                .then( mostrarCarrinho );
+        }
+
+        function limpar() {
+            fetch( `http://localhost:8080/cart/${idCarrinho}/clear` )
+                .then( response => response.json() )
+                .then( mostrarCarrinho );
+        }
+
+        function checkout() {
+            fetch( `http://localhost:8080/cart/${idCarrinho}/checkout` )
+                .then( response => response.json() )
+                .then( info => {
+                    document.getElementById( "carrinho" ).getElementsByClassName( "subtotal" )[ 0 ].innerHTML = `Subtotal: R$ ${info.totalPrice}`;
+
+                    document.getElementById( "info" ).innerHTML = `<B>Checkout:</B><br><br>` + JSON.stringify( info );
+                } );
+        }
+
+    </script>
+</body>
+
+</html>
